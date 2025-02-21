@@ -1,12 +1,12 @@
 <?php
-require_once '../config/db.php';
+require_once __DIR__ . '/../controllers/authController.php';
 
 class Auth {
     private $conn;
 
-    public function __construct($db)
+    public function __construct($conn)
     {
-        $this->conn = new $db;
+        $this->conn = $conn;
     }
 
     //register user
@@ -33,10 +33,14 @@ class Auth {
     }
 
     //log in
-    public function login($password,$email){
+    public function login($email,$password){
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute(['email'=>$email]);
         $user = $stmt->fetch();
+
+        if(!$user) {
+            return "❌ Invalid email or password.";
+        }
 
        if ($user && password_verify($password,$user['password'])) {
             session_start();
@@ -44,6 +48,6 @@ class Auth {
             $_SESSION['username'] = $user ['username'];
             return true;
        } 
-       return false; //login failed
+       return "❌ Invalid email or password."; //login failed
     }
 }
