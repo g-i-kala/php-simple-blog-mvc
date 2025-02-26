@@ -17,7 +17,7 @@
             </div>
         <?php endif; ?>
         
-        please login.</h1>
+        please log in.</h1>
 
         <div class="form__wrapper">
             <form action="/login" method="POST" id="login-form" class="form__reglog">
@@ -35,6 +35,10 @@
                     </div>
                 <?php endif;?>
                 <button type="submit" id="login" name="login" class="btn">LogIn</button>
+                <div>
+                    <p>You don't have an account? </p>
+                    <a href='/register' class="btn"> Register </a>
+                </div>
             </form>
         </div>
     </div>

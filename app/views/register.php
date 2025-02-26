@@ -30,6 +30,10 @@
                 <input type="password" id="password" name="password" class="input__field" required>
                 <br>
                 <button type="submit" id="register" name="register" class="btn">Register</button>
+                <div>
+                    <p>You already have an account? </p>
+                    <a href='/login' class="btn"> Log In </a>
+                </div>
             </form>
         </div>
     </div>

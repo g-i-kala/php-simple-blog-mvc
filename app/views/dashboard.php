@@ -35,9 +35,13 @@ if (!isset($_SESSION['user_id'])) {
             
             <button type="submit" id="add_post" name="add_post" class="btn">Add Post</button>
         </form>        
+             <div>
+                <p>You done? Logout. </p>
+                <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                </form>
+                <button form="logout-form" type="submit" class="btn">Logout</button>
+            </div>
     </div>
-
-
 
 </body>
 </html>

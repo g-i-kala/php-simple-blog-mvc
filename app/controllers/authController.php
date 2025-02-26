@@ -66,4 +66,16 @@ class AuthController {
         }
     }
     }
+
+    public function isLoggedin() {
+        return isset($_SESSION['user_id']);
+    }
+
+    public function logOut() {
+        if (isset($_SESSION['user_id'])){
+            $_SESSION = []; 
+            session_destroy();
+            header("Location: /login");
+        };
+    }
 }
