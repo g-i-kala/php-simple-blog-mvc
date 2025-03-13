@@ -61,7 +61,7 @@ class AuthController {
             header("Location: /dashboard?success=loggedin");
             exit();
         } else {
-            header("Location: /login?error=". urlencode($result) . "&email=" . urlencode($email));
+            header("Location:/login?error=" . urlencode($result) . "&email=" . urlencode($email));
             exit();
         }
     }

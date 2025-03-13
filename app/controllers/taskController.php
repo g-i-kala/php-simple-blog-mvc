@@ -10,10 +10,6 @@ class TaskController {
         $this->postManager = new PostManager($conn);
     }
 
-    public function fetchUserPosts($userId) {
-        return $this->postManager->fetchUserPosts($userId);
-    }
-
     public function addPost($userId, $title, $content) {
         if ($this->postManager->addPost($userId, $title, $content)) {
             return true;
@@ -21,6 +17,22 @@ class TaskController {
             error_log("Failed to add post");
             return false;
         };
+    }
+
+    public function displayPosts() {
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            $posts = $this->postManager->fetchUserPosts($userId);
+            $this->renderView('dashboard', ['posts' => $posts]);
+        } else {
+            header("Location: /login"); 
+            exit();
+        }
+    }
+
+    private function renderView($viewName, $data = []) {
+        extract($data); // Makes the array keys available as variables in the view
+        require_once __DIR__ . "/../views/{$viewName}.php";
     }
 
     public function handlePostSubmission() {
@@ -37,6 +49,7 @@ class TaskController {
             }
         }
     }
+
 }
 
 ?>

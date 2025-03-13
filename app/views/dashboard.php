@@ -1,5 +1,4 @@
 <?php
-session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -41,6 +40,23 @@ if (!isset($_SESSION['user_id'])) {
                 </form>
                 <button form="logout-form" type="submit" class="btn">Logout</button>
             </div>
+    </div>
+    <div id="user-posts" class="user__posts">
+        <!-- get the posts
+            loop through the posts 
+            &display them  
+        -->
+            
+            <div class="posts">
+            <?php foreach ($posts as $post): ?>
+                <div class="post">
+                    <h2><?= htmlspecialchars($post['title']); ?></h2>
+                    <p><?= htmlspecialchars($post['content']); ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+            
+            
     </div>
 
 </body>
