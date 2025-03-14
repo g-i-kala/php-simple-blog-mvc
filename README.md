@@ -43,7 +43,7 @@ Update database configuration in the config/ directory.
 php -S localhost:8000 -t public
 
 6. Folder Structure
-
+plaintext
 root/
 ├── app/                # Controllers, Models, and business logic
 ├── config/             # Configuration files (e.g., database settings)
