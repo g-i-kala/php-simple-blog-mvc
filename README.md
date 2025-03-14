@@ -43,7 +43,7 @@ Update database configuration in the config/ directory.
 php -S localhost:8000 -t public
 
 6. Folder Structure
-plaintext
+```plaintext
 root/
 ├── app/                # Controllers, Models, and business logic
 ├── config/             # Configuration files (e.g., database settings)
@@ -54,7 +54,7 @@ root/
 ├── index.php           # Application entry point
 ├── package.json        # Node.js package metadata
 ├── composer.json       # PHP dependencies configuration
-└── README.md           # Project documentation
+└── README.md           # Project documentation```
 
 7. Technologies Used
 Backend: PHP
