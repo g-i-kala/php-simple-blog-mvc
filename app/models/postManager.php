@@ -10,7 +10,7 @@ class PostManager {
     }
 
     public function fetchUserPosts($userId) {
-        $stmt = $this->conn->prepare("SELECT * FROM posts WHERE user_id = :userId ");
+        $stmt = $this->conn->prepare("SELECT * FROM posts WHERE user_id = :userId ORDER BY created_at DESC");
         $stmt->execute(['userId' => $userId]);
         return $stmt->fetchAll();
     }
@@ -20,5 +20,4 @@ class PostManager {
         $stmt->execute(['user_id' => $userId, 'title' => $title, 'content' => $content]);
         return true;
     }
-
 }

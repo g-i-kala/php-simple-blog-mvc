@@ -4,42 +4,30 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-?>
+$title = "Home - My Blog";
+ob_start();
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@Blog Dashboard</title>
-</head>
-<body>
-<div class="page__container">
-    
-<header>
-    <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']) ?>! </h1>
-    </header>
+?>
+<div>
+    <div class="header__wrapper mx-auto py-8">
+        <h1 class="font-bold">Welcome, <?php echo htmlspecialchars($_SESSION['username']) ?>! </h1>
+    </div>
 
     <div class="display__posts">
         
     </div>
 
-    <div class="form__add__post">
-        <form method="POST" action="/add_post" id="add_post" name="add_post">
+    <div class="form__add__post my-4">
+        <form method="POST" action="/add_post" id="add_post" name="add_post" class="flex flex-col">
             <label for="title">Title:</label>
-            <input type="text" name="title" id="title" class="input__field" required>
+            <input type="text" name="title" id="title" class="input__field border-1 border-blue-500 rounded-md" required>
             
             <label for="content">Post content:</label>
-            <textarea name="content" id="content" class="input__textarea" required></textarea>
+            <textarea name="content" id="content" class="input__textarea border-1 border-blue-500 rounded-md" required></textarea>
             
-            <button type="submit" id="add_post" name="add_post" class="btn">Add Post</button>
+            <button type="submit" id="add_post" name="add_post" class="btn size-fit my-4 px-4 py-1 border-1 border-blue-400 bg-blue-400 hover:bg-blue-200 rounded-md hover:cursor-pointer">Add Post</button>
         </form>        
-             <div>
-                <p>You done? Logout. </p>
-                <form id="logout-form" action="/logout" method="POST" style="display: none;">
-                </form>
-                <button form="logout-form" type="submit" class="btn">Logout</button>
-            </div>
+             
     </div>
     <div id="user-posts" class="user__posts">
         <!-- get the posts
@@ -47,17 +35,18 @@ if (!isset($_SESSION['user_id'])) {
             &display them  
         -->
             
-            <div class="posts">
+            <div class="posts flex flex-col gap-2">
             <?php foreach ($posts as $post): ?>
                 <div class="post">
-                    <h2><?= htmlspecialchars($post['title']); ?></h2>
-                    <p><?= htmlspecialchars($post['content']); ?></p>
+                    <h2 class="text-lg font-bold py-2"><?= htmlspecialchars($post['title']); ?></h2>
+                    <p class="text-normal"><?= htmlspecialchars($post['content']); ?></p>
                 </div>
             <?php endforeach; ?>
-        </div>
-            
-            
+        </div>         
     </div>
+</div>
 
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+include 'layout.php';
+?>
