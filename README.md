@@ -26,21 +26,21 @@ This is a simple blog application built with PHP and follows the MVC (Model-View
    cd <repository_directory>
 
 2. Install dependencies:
-``bash
+```bash
 composer install
-npm install
+npm install```
 
 3. Compile Tailwind CSS (for development):
-``bash
+```bash
 npx tailwindcss -i ./src/Tailwind/input.css -o ./public/css/output.css --watch
-
+```
 4. Set up the database:
 Import the provided .sql file into your database.
 Update database configuration in the config/ directory.
 
 5. Start the development server:
-``bash
-php -S localhost:8000 -t public
+```bash
+php -S localhost:8000 -t public```
 
 6. Folder Structure
 ```plaintext
@@ -54,7 +54,8 @@ root/
 ├── index.php           # Application entry point
 ├── package.json        # Node.js package metadata
 ├── composer.json       # PHP dependencies configuration
-└── README.md           # Project documentation```
+└── README.md           # Project documentation
+```
 
 7. Technologies Used
 Backend: PHP
