@@ -24,11 +24,12 @@ This is a simple blog application built with PHP and follows the MVC (Model-View
    ```bash
    git clone <repository_url>
    cd <repository_directory>
-
+   ```
 2. Install dependencies:
 ```bash
 composer install
-npm install```
+npm install
+```
 
 3. Compile Tailwind CSS (for development):
 ```bash
@@ -40,7 +41,8 @@ Update database configuration in the config/ directory.
 
 5. Start the development server:
 ```bash
-php -S localhost:8000 -t public```
+php -S localhost:8000 -t public
+```
 
 6. Folder Structure
 ```plaintext
