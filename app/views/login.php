@@ -20,10 +20,10 @@ ob_start();
     <div class="form__wrapper my-4">
         <form action="/login" method="POST" id="login-form" class="form__reglog flex flex-col">
             <label for="email" class="input__label">E-Mail:</label>
-            <input type="text" id="email" name="email" class="input__field border-1 border-blue-500 rounded-md"
+            <input type="text" id="email" name="email" class="input__field border-1 border-blue-500 rounded-md px-2 py-1"
             value="<?php echo isset($_GET["email"]) ? htmlspecialchars($_GET["email"]) : '';  ?>" required>
             <label for="password" class="input__label">Password:</label>
-            <input type="password" id="password" name="password" class="input__field border-1 border-blue-500 rounded-md" required>
+            <input type="password" id="password" name="password" class="input__field border-1 border-blue-500 rounded-md px-2 py-1" required>
             
             <!-- error messages -->
             <?php if (isset($_GET['error'])) : ?>

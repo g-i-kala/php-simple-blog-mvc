@@ -10,8 +10,8 @@ $authController = new AuthController($conn);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-//echo "Requested URI: " . $uri . "<br>";
-//echo "Request Method: " . $_SERVER['REQUEST_METHOD'] . "<br>";
+// echo "Requested URI: " . $uri . "<br>";
+// echo "Request Method: " . $_SERVER['REQUEST_METHOD'] . "<br>";
 
 $isLoggedin = $authController->isLoggedin();
 //echo var_dump($isLoggedin);
@@ -37,6 +37,12 @@ if ($uri === '/' && !$isLoggedin) {
     $authController->handleLogin();
 } elseif ($uri === '/add_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $taskController->handlePostSubmission();
+} elseif ($uri === '/delete_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $taskController->handlePostDelete();
+} elseif ($uri === '/update_post_inline' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $taskController->updatePostInline();
+} elseif ($uri === '/update_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $taskController->handlePostUpdate();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $authController->logOut(); 
 } else {
