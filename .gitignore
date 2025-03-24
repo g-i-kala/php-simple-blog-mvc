@@ -1,2 +1,48 @@
 /config/db.php
 kokoszki.php
+
+# Ignore the composer.lock file if you want to keep the dependencies in your project.
+# If you want to track dependencies, you can remove this line.
+composer.lock
+
+# Ignore vendor directory (if you're using Composer)
+vendor/
+
+# Ignore environment files
+.env
+.env.local
+.env.*.local
+
+# Ignore log files
+*.log
+
+# Ignore cache and temporary files
+cache/
+tmp/
+temp/
+*.tmp
+
+# Ignore IDE-specific files
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+app/.DS_Store
+public/.DS_Store
+
+# Ignore compiled files
+*.phar
+*.o
+*.so
+
+# Ignore backups and temporary files
+*~
+*.bak
+*.swp
+
+# Ignore test coverage reports
+coverage/
