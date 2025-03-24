@@ -5,8 +5,6 @@ require_once __DIR__ . '/../app/controllers/taskController.php';
 require_once __DIR__ . '/../app/controllers/authController.php';
 require_once __DIR__ . '/../config/db.php';
 
-$conn = new Database()->connect();
-
 $taskController = new TaskController($conn);
 $authController = new AuthController($conn);
 
@@ -48,8 +46,11 @@ if ($uri === '/' && !$isLoggedin) {
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $authController->logOut(); 
 } else {
-    abort(404);
+    http_response_code(404);
+    require_once __DIR__ . '/../app/views/404.php';
+    exit();
 }
+
 
 
 function routeToController($uri, $routes) {
@@ -68,6 +69,5 @@ function abort($code = 404) {
 
 routeToController($uri, $routes);
 
-?>
 
- 
+?>
