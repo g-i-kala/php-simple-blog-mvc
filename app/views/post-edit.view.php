@@ -10,12 +10,12 @@ ob_start();
 ?>
 
 <div id="edit__post__section" class="post__edit__modal">
-    <h1 class="text-2xl font-bold pt-4 border-t-2 border-blue-400">Edit Post Section</h1>
+    <h1 class="text-2xl font-bold pt-4 ">Edit Post Section</h1>
     <?php if (isset($_SESSION['edit_post_data'])): ?>
         <?php $edit_post = $_SESSION['edit_post_data']?>
         <h1 class="text-xl font-bold pt-4">Edit <?= $edit_post['title'] ?> post</h1>
-        <form action="/update_post" method="POST"  id="update_post" name="update_post" class="flex flex-col">
-            <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($post['id']); ?>">
+        <form action="/post/update" method="POST"  id="post_update" name="post_update" class="flex flex-col">
+            <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($_SESSION['edit_post_id']); ?>">
             <label for="title">Title:</label>
             <input type="text" name="title" id="title" value="<?php echo htmlspecialchars($edit_post['title']); ?>" class="input__field border-1 border-blue-500 rounded-md px-2 py-1" required>
             
@@ -24,12 +24,19 @@ ob_start();
                 <?php echo htmlspecialchars($edit_post['content']); ?>
             </textarea>
                
-            <button type="submit" id="update_post" name="action" value="update_post" class="btn size-fit my-4 px-4 py-1 border-1 border-blue-400 bg-blue-400 hover:bg-blue-200 rounded-md hover:cursor-pointer">Update Post</button>
+            <button type="submit" id="update_post" name="action" value="post_update" class="btn size-fit my-4 px-4 py-1 border-1 border-blue-400 bg-blue-400 hover:bg-blue-200 rounded-md hover:cursor-pointer">Update Post</button>
         </form>   
     
-    <?php unset($_SESSION['edit_post_data']); ?>
+    <?php   unset($_SESSION['edit_post_data']);
+            unset($_SESSION['edit_post_id']); ?>
     <?php else: ?>
-        <p>No post selected for editing.</p>
+        <?php if (isset($errors['no_post'])): ?>
+            <p class="text-red-500 font-bold font-sm">
+                <?= $errors['no_post'] ?>
+            </p>
+        <?php else: ?>
+            <p>No post selected for editing.</p>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 

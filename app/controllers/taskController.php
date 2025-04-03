@@ -68,7 +68,7 @@ class TaskController {
     }
 
     public function handlePostDelete() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_post'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['post_delete'])) {
             $post_id = $_POST['post_id'];
             //echo $_SESSION['user_id'] . " id " . $post_id;
             // Call the deletePost method
@@ -81,21 +81,28 @@ class TaskController {
         }
     }
 
-    public function updatePostInline() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'update_post_inline')) {
+    public function handlePostEdit() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'post_edit')) {
+            $errors = [];
             $_SESSION['edit_post_id'] = $_POST['post_id'];
             $post_id = $_POST['post_id'];
+
             $post = $this->postManager->getPostById($post_id);
 
-            $_SESSION['edit_post_data'] = $post;
+            if(! $post) {
+                $errors['no_post'] = "No such post to edit";
+                require __DIR__ . "./../views/post-edit.view.php";
+            } else {
+                $_SESSION['edit_post_data'] = $post;
+                $_SESSION['edit_post_id'] = $post_id;
 
-            header('Location: /dashboard#edit__post__section'); 
-            exit();
+                header("Location: /post/edit");
+            }
         }
     }
 
     public function handlePostUpdate() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'update_post')) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'post_update')) {
             $post_id = $_POST['post_id'];
             $title = trim($_POST['title']);
             $content = trim($_POST['content']);

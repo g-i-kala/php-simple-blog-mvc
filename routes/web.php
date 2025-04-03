@@ -41,12 +41,14 @@ if ($uri === '/' && !$isLoggedin) {
     $authController->handleLogin();
 } elseif ($uri === '/add_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $taskController->handlePostSubmission();
-} elseif ($uri === '/delete_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+} elseif ($uri === '/post/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $taskController->handlePostDelete();
+} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $taskController->handlePostEdit();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     require_once __DIR__ . '/../app/views/post-edit.view.php';
-    exit();
-} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    exit();   
+} elseif ($uri === '/post/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $taskController->handlePostUpdate();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $authController->logOut(); 

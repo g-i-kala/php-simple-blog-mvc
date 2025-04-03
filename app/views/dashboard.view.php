@@ -25,7 +25,7 @@ ob_start();
             <label for="content">Post content:</label>
             <textarea name="content" id="content" class="input__textarea border-1 border-blue-500 rounded-md px-2 py-1" required></textarea>
             
-            <button type="submit" id="add_post" name="add_post" class="btn size-fit my-4 px-4 py-1 bg-blue-400 hover:bg-blue-200 rounded-md hover:cursor-pointer">Add Post</button>
+            <button type="submit" id="add_post" name="add_post" class=" text-white size-fit my-4 px-4 py-1 bg-blue-400 hover:bg-blue-300 rounded-md hover:cursor-pointer">Add Post</button>
         </form>        
              
     </div>
@@ -39,12 +39,13 @@ ob_start();
                         <p class="text-normal"><?= htmlspecialchars($post['content']); ?></p>
                     </div>
                     <div class="post__edit flex flex-col text-white">
-                        <div class="w-full">
-                            <a href='/post/edit' class="w-full my-4 px-4 py-1 bg-green-500 hover:bg-green-400 rounded-md hover:cursor-pointer">Edit</a>
-                        </div>
-                        <form action="/delete_post" method="POST" id="delete_post" class="">
+                        <form action="/post/edit" method="POST" id="post_edit" class="">
                             <input type=hidden name="post_id" value="<?php echo htmlspecialchars($post['id']) ?>">
-                            <button type="submit" name="delete_post" class="my-4 px-4 py-1 bg-red-400 hover:bg-red-600 rounded-md hover:cursor-pointer">Delete</button>
+                            <button type="submit" name="action" value="post_edit" class="w-full my-2 px-4 py-1 bg-green-500 hover:bg-green-400 rounded-md hover:cursor-pointer">Edit</button>
+                        </form>
+                        <form action="/post/delete" method="POST" id="post_delete" class="">
+                            <input type=hidden name="post_id" value="<?php echo htmlspecialchars($post['id']) ?>">
+                            <button type="submit" name="post_delete" class="my-2 px-4 py-1 bg-red-400 hover:bg-red-600 rounded-md hover:cursor-pointer">Delete</button>
                         </form>
                     </div>
                 </div>
