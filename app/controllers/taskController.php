@@ -49,7 +49,7 @@ class TaskController {
     }
 
     private function renderView($viewName, $data = []) {
-        extract($data); // Makes the array keys available as variables in the view
+        extract($data); 
         require_once __DIR__ . "/../views/{$viewName}.view.php";
     }
 
@@ -58,9 +58,8 @@ class TaskController {
             $title = $_POST['title'];
             $content = $_POST['content'];
            
-            // Call the addPost method
             if ($this->addPost($_SESSION['user_id'], $title, $content)) {
-                header("Location: /dashboard"); // Redirect after adding the post
+                header("Location: /dashboard"); 
                 exit();
             } else {
                 echo "Error: Could not add post.";

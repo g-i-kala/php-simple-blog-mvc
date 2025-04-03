@@ -4,6 +4,8 @@ session_start();
 require_once __DIR__ . '/../app/controllers/taskController.php';
 require_once __DIR__ . '/../app/controllers/authController.php';
 require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../app/core/functions.php';
+
 
 $conn = new Database()->connect();
 
@@ -66,7 +68,7 @@ function abort($code = 404) {
     exit();
 }
 
-routeToController($uri, $routes);
+//routeToController($uri, $routes);
 
 ?>
 
