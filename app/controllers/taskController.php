@@ -50,7 +50,7 @@ class TaskController {
 
     private function renderView($viewName, $data = []) {
         extract($data); // Makes the array keys available as variables in the view
-        require_once __DIR__ . "/../views/{$viewName}.php";
+        require_once __DIR__ . "/../views/{$viewName}.view.php";
     }
 
     public function handlePostSubmission() {

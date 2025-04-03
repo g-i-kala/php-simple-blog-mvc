@@ -19,7 +19,7 @@ $isLoggedin = $authController->isLoggedin();
 //echo var_dump($isLoggedin);
 
 if ($uri === '/' && !$isLoggedin) {
-    require_once __DIR__ . '/../app/views/login.php';
+    require_once __DIR__ . '/../app/views/login.view.php';
     exit();
 } elseif ($uri === '/' && $isLoggedin) {
     $posts = $taskController->displayPosts();
@@ -28,10 +28,10 @@ if ($uri === '/' && !$isLoggedin) {
     $taskController->displayPosts();
     exit();
 } elseif ($uri === '/login' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    require_once __DIR__ . '/../app/views/login.php';
+    require_once __DIR__ . '/../app/views/login.view.php';
     exit();
 } elseif ($uri === '/register' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    require_once __DIR__ . '/../app/views/register.php';
+    require_once __DIR__ . '/../app/views/register.view.php';
     exit();
 } elseif ($uri === '/register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $authController->handleRegister();
