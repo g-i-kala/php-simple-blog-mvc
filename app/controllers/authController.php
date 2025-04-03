@@ -24,14 +24,10 @@ class AuthController {
     
         if (! Validator::email($email)) {
             $errors['email'] = "Please fill in a valid email address.";
-            //header("Location: /register?error=". urlencode($error));
-            //exit();
         }
 
         if (! Validator::string($password,6,50)) {
             $errors['password'] = "Password must to be at least 6 charcters long.";
-            //header("Location: /register?error=" . urlencode($error));
-            //exit();
         }
 
         if (! Validator::string($username,1,50)) {
@@ -45,16 +41,16 @@ class AuthController {
 
         $result = $this->auth->register($username,$password,$email);
         
-        if ($result === "✅ Registration successful!") {
-            header("Location: ../login?success=" . urlencode($result));
-            exit();
+        if ($result) {
+            $_SESSION['success'] = "Resgistration succesful.";
+            header("Location: /login");
         } else {
-            header("Location: /register?error=" . urlencode($result) .
-            "&username=" . urlencode($username)."&email=" . urlencode($email));
-            exit();
+            $errors['general'] = "Something went wrong. Please try again.";
+            require __DIR__ . "./../views/register.view.php";
         }
     }
     }
+
     public function handleLogin() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['login'])) {
         

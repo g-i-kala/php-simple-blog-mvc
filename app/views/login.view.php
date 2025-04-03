@@ -8,9 +8,9 @@ ob_start();
     <div class="header__wrapper mx-auto py-8">
         <h1 class="">Welcome,
         
-        <?php if (isset($_GET['success'])) : ?>
+        <?php if (isset($_SESSION['success'])) : ?>
             <div class="success-message">
-                <?php echo htmlspecialchars($_GET['success']); ?>
+                <?= htmlspecialchars($_SESSION['success']); ?>
             </div>
         <?php endif; ?>
         
