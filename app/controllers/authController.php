@@ -61,18 +61,21 @@ class AuthController {
 
         if (! Validator::email($email)) {
             $errors['email'] = "Please fill in a valid email address.";
-            //header("Location: /login?error=". urlencode($error));
-            exit();
+        }
+
+        if (! empty($errors)) {
+            require __DIR__ . "./../views/login.view.php";
+            return;
         }
 
         $result = $this->auth->login($email, $password);
 
-        if ($result === true) {
-            header("Location: /dashboard?success=loggedin");
-            exit();
+        if ($result) {
+            $_SESSION['success'] = "Login succesful. Enjoy.";
+            header("Location: /dashboard");
         } else {
-            header("Location:/login?error=" . urlencode($result) . "&email=" . urlencode($email));
-            exit();
+            $errors['general'] = "Something went wrong. Please try again.";
+            require __DIR__ . "./../views/login.view.php";
         }
     }
     }

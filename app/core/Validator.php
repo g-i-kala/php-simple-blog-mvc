@@ -5,6 +5,7 @@ class Validator
     public static function string($value, $min = 1, $max = 1000) 
     {
         $value = strlen(trim($value));
+        
         return $value >= $min && $value <= $max;
     }
 

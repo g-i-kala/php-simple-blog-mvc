@@ -16,12 +16,17 @@ ob_start();
         
         please log in.</h1>
     </div>
-
+    <?php if (isset($errors['general'])): ?> 
+        <p class="text-red-500 font-bold text-sm mt-2"><?= htmlspecialchars($errors['general']) ?></p>
+    <?php endif; ?>
     <div class="form__wrapper my-4">
         <form action="/login" method="POST" id="login-form" class="form__reglog flex flex-col">
             <label for="email" class="input__label">E-Mail:</label>
-            <input type="text" id="email" name="email" class="input__field border-1 border-blue-500 rounded-md px-2 py-1"
-            value="<?php echo isset($_GET["email"]) ? htmlspecialchars($_GET["email"]) : '';  ?>" required>
+            <input  id="email" name="email" class="input__field border-1 border-blue-500 rounded-md px-2 py-1"
+            value="<?php echo isset($_GET["email"]) ? htmlspecialchars($_GET["email"]) : '';  ?>" >
+            <?php if(isset($errors['email'])) : ?>
+                <p class="text-red-500 font-bold text-sm mt-2"><?= htmlspecialchars($errors['email']) ?></p>
+            <?php endif; ?>
             <label for="password" class="input__label">Password:</label>
             <input type="password" id="password" name="password" class="input__field border-1 border-blue-500 rounded-md px-2 py-1" required>
             
