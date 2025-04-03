@@ -97,8 +97,8 @@ class TaskController {
     public function handlePostUpdate() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'update_post')) {
             $post_id = $_POST['post_id'];
-            $title = $_POST['title'];
-            $content = $_POST['content'];
+            $title = trim($_POST['title']);
+            $content = trim($_POST['content']);
 
             if ($this->updatePost($post_id, $title, $content)) {
                 header("Location: /dashboard");
