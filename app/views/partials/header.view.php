@@ -1,6 +1,9 @@
 
 <div class="flex flex-row justify-between items-center p-4 bg-blue-500 text-white">
-    <h1 class="text-2xl font-bold">My Blog</h1>
+    <a href="/dashboard">
+        <h1 class="text-2xl font-bold">My Blog</h1>
+    </a>
+    
 
     <?php if(isset($_SESSION['user_id'])) : ?>
         <div class="logout__wrapper">
