@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use PDO;
+use PDOException;
 
 class PostService
 {
@@ -13,38 +14,73 @@ class PostService
         $this->conn = $conn;
     }
 
-    public function fetchUserPosts($userId)
+    public function get($userId)
     {
-        $stmt = $this->conn->prepare("SELECT * FROM posts WHERE user_id = :userId ORDER BY created_at DESC");
-        $stmt->execute(['userId' => $userId]);
-        return $stmt->fetchAll();
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM posts WHERE user_id = :userId ORDER BY created_at DESC");
+            $stmt->execute(['userId' => $userId]);
+            return $stmt->fetchAll();
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 
-    public function getPostById($postId)
+    public function find($postId)
     {
-        $stmt = $this->conn->prepare("SELECT title, content FROM posts WHERE id = :postId");
-        $stmt->execute(['postId' => $postId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->conn->prepare("SELECT title, content FROM posts WHERE id = :postId");
+            $stmt->execute(['postId' => $postId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
     }
 
-    public function addPost($userId, $title, $content)
+    public function store($userId, $title, $content)
     {
-        $stmt = $this->conn->prepare("INSERT INTO posts (user_id, title, content, created_at) VALUES (:user_id, :title, :content, NOW())");
-        $stmt->execute(['user_id' => $userId, 'title' => $title, 'content' => $content]);
-        return true;
+        try {
+            $stmt = $this->conn->prepare("INSERT INTO posts (user_id, title, content, created_at) VALUES (:user_id, :title, :content, NOW())");
+            $stmt->execute(['user_id' => $userId, 'title' => $title, 'content' => $content]);
+            return true;
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
     }
 
-    public function deletePost($postId)
+    public function update($postId, $title, $content)
     {
-        $stmt = $this->conn->prepare("DELETE FROM posts WHERE id = :postId");
-        $stmt->execute(['postId' => $postId]);
-        return true;
+        try {
+            $stmt = $this->conn->prepare("UPDATE posts SET title = :title, content = :content WHERE id = :post_id");
+            $stmt->execute(['post_id' => $postId, 'title' => $title, 'content' => $content]);
+            return true;
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
     }
 
-    public function updatePost($postId, $title, $content)
+    public function destroy($postId)
     {
-        $stmt = $this->conn->prepare("UPDATE posts SET title = :title, content = :content WHERE id = :post_id");
-        $stmt->execute(['post_id' => $postId, 'title' => $title, 'content' => $content]);
-        return true;
+        try {
+            $stmt = $this->conn->prepare("DELETE FROM posts WHERE id = :postId");
+            $stmt->execute(['postId' => $postId]);
+            return true;
+
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+
     }
+
+
 }

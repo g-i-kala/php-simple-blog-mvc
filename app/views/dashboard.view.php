@@ -21,10 +21,15 @@ ob_start();
         <form method="POST" action="/add_post" id="add_post" name="add_post" class="flex flex-col">
             <label for="title">Title:</label>
             <input type="text" name="title" id="title" class="input__field border-1 border-blue-500 rounded-md px-2 py-1" required>
-            
+                <?php if (isset($errors['title'])): ?> 
+                    <p class="text-red-500 font-bold text-sm mt-2"><?= $errors['title'] ?></p>
+                <?php endif; ?>
+        
             <label for="content">Post content:</label>
             <textarea name="content" id="content" class="input__textarea border-1 border-blue-500 rounded-md px-2 py-1" required></textarea>
-            
+                <?php if (isset($errors['content'])): ?> 
+                    <p class="text-red-500 font-bold text-sm mt-2"><?= $errors['content'] ?></p>
+                <?php endif; ?>
             <button type="submit" id="add_post" name="add_post" class=" text-white size-fit my-4 px-4 py-1 bg-blue-400 hover:bg-blue-300 rounded-md hover:cursor-pointer">Add Post</button>
         </form>        
              
