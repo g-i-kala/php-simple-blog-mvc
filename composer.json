@@ -2,8 +2,7 @@
     "name": "karo_ej/simple-blog",
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "App\\Config\\": "config/"
+            "App\\": "app/"
         }
     },
     "authors": [

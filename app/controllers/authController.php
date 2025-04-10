@@ -1,92 +1,98 @@
 <?php
 
-require_once __DIR__ . "/../../config/Database.php";
-require_once __DIR__ . "/../models/Auth.php";
-require_once __DIR__ . "/../core/Validator.php";
+namespace App\Controllers;
 
+use App\Core\Validator;
+use App\Services\AuthService;
 
-class AuthController {
+class AuthController
+{
     private $auth;
 
-    public function __construct($conn) {
-        $this->auth = new Auth($conn);
+    public function __construct($conn)
+    {
+        $this->auth = new AuthService($conn);
     }
 
-    public function handleRegister () {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['register'])) {
-        
-        $errors = [];
-        $result = '';
+    public function handleRegister()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
-        $username = htmlspecialchars((trim($_POST['username'])));
-        $email = htmlspecialchars((trim($_POST['email'])));
-        $password = $_POST['password'];
-    
-        if (! Validator::email($email)) {
-            $errors['email'] = "Please fill in a valid email address.";
-        }
+            $errors = [];
+            $result = '';
 
-        if (! Validator::string($password,6,50)) {
-            $errors['password'] = "Password must to be at least 6 charcters long.";
-        }
+            $username = htmlspecialchars((trim($_POST['username'])));
+            $email = htmlspecialchars((trim($_POST['email'])));
+            $password = $_POST['password'];
 
-        if (! Validator::string($username,1,50)) {
-            $errors['username'] = "Username must be lees than 50 characters long.";
-        }
+            if (! Validator::email($email)) {
+                $errors['email'] = "Please fill in a valid email address.";
+            }
 
-        if (! empty($errors)) {
-            require __DIR__ . "./../views/register.view.php";
-            return;
-        }
+            if (! Validator::string($password, 6, 50)) {
+                $errors['password'] = "Password must to be at least 6 charcters long.";
+            }
 
-        $result = $this->auth->register($username,$password,$email);
-        
-        if ($result) {
-            $_SESSION['success'] = "Resgistration succesful.";
-            header("Location: /login");
-        } else {
-            $errors['general'] = "Something went wrong. Please try again.";
-            require __DIR__ . "./../views/register.view.php";
-        }
-    }
-    }
+            if (! Validator::string($username, 1, 50)) {
+                $errors['username'] = "Username must be lees than 50 characters long.";
+            }
 
-    public function handleLogin() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST'&& isset($_POST['login'])) {
-        
-        $errors = [];
+            if (! empty($errors)) {
+                require __DIR__ . "./../views/register.view.php";
+                return;
+            }
 
-        $email = htmlspecialchars((trim($_POST['email'])));
-        $password = $_POST['password'];
+            $result = $this->auth->register($username, $password, $email);
 
-        if (! Validator::email($email)) {
-            $errors['email'] = "Please fill in a valid email address.";
-        }
-
-        if (! empty($errors)) {
-            require __DIR__ . "./../views/login.view.php";
-            return;
-        }
-
-        $result = $this->auth->login($email, $password);
-
-        if ($result) {
-            $_SESSION['success'] = "Login succesful. Enjoy.";
-            header("Location: /dashboard");
-        } else {
-            $errors['general'] = "Something went wrong. Please try again.";
-            require __DIR__ . "./../views/login.view.php";
+            if ($result) {
+                $_SESSION['success'] = "Resgistration succesful.";
+                header("Location: /login");
+            } else {
+                $errors['general'] = "Something went wrong. Please try again.";
+                require __DIR__ . "./../views/register.view.php";
+            }
         }
     }
+
+    public function handleLogin()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+
+            $errors = [];
+
+            $email = htmlspecialchars((trim($_POST['email'])));
+            $password = $_POST['password'];
+
+            if (! Validator::email($email)) {
+                $errors['email'] = "Please fill in a valid email address.";
+            }
+
+            if (! empty($errors)) {
+                require __DIR__ . "./../views/login.view.php";
+                return;
+            }
+
+            $result = $this->auth->login($email, $password);
+
+            if ($result) {
+                $_SESSION['success'] = "Login succesful. Enjoy.";
+                header("Location: /dashboard");
+            } else {
+                $errors['general'] = "Something went wrong. Please try again.";
+                require __DIR__ . "./../views/login.view.php";
+            }
+        }
     }
 
-    public function isLoggedin() {
+    public function isLoggedin()
+    {
         return isset($_SESSION['user_id']);
     }
 
-    public function logOut() {
-        if (isset($_SESSION['user_id'])){
-            $_SESSION = []; 
+    public function logOut()
+    {
+        if (isset($_SESSION['user_id'])) {
+            $_SESSION = [];
             session_destroy();
             header("Location: /login");
         };
