@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Core\Validator;
+use Core\Validator;
 use App\Services\AuthService;
 
 class AuthController

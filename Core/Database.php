@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Core;
+namespace Core;
 
 use PDO;
 use PDOException;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 class Database

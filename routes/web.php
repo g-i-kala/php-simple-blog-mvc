@@ -1,14 +1,14 @@
 <?php
 
-use App\Core\Database;
+use Core\Database;
 use App\Controllers\AuthController;
-use App\Controllers\TaskController;
+use App\Controllers\PostController;
 
 session_start();
 
 $conn = new Database()->connect();
 
-$TaskController = new TaskController($conn);
+$PostController = new PostController($conn);
 $AuthController = new AuthController($conn);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -23,10 +23,10 @@ if ($uri === '/' && !$isLoggedin) {
     require_once __DIR__ . '/../app/views/login.view.php';
     exit();
 } elseif ($uri === '/' && $isLoggedin) {
-    $posts = $TaskController->displayPosts();
+    $posts = $PostController->index();
     exit();
 } elseif ($uri === '/dashboard' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    $TaskController->displayPosts();
+    $PostController->index();
     exit();
 } elseif ($uri === '/login' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     require_once __DIR__ . '/../app/views/login.view.php';
@@ -39,16 +39,16 @@ if ($uri === '/' && !$isLoggedin) {
 } elseif ($uri === '/login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $AuthController->handleLogin();
 } elseif ($uri === '/add_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $TaskController->handlePostSubmission();
+    $PostController->handlePostSubmission();
 } elseif ($uri === '/post/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $TaskController->handlePostDelete();
+    $PostController->handlePostDelete();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $TaskController->handlePostEdit();
+    $PostController->handlePostEdit();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     require_once __DIR__ . '/../app/views/post-edit.view.php';
     exit();
 } elseif ($uri === '/post/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $TaskController->handlePostUpdate();
+    $PostController->handlePostUpdate();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $AuthController->logOut();
 } else {

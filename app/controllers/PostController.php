@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Services\PostService;
 
-class TaskController
+class PostController
 {
     private $PostService;
 
@@ -13,7 +13,19 @@ class TaskController
         $this->PostService = new PostService($conn);
     }
 
-    public function addPost($userId, $title, $content)
+    public function index()
+    {
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            $posts = $this->PostService->fetchUserPosts($userId);
+            renderView('dashboard', ['posts' => $posts]);
+        } else {
+            header("Location: /login");
+            exit();
+        }
+    }
+
+    public function create($userId, $title, $content)
     {
         if ($this->PostService->addPost($userId, $title, $content)) {
             return true;
@@ -23,17 +35,7 @@ class TaskController
         };
     }
 
-    public function deletePost($postId)
-    {
-        if ($this->PostService->deletePost($postId)) {
-            return true;
-        } else {
-            error_log("Failed to delete post");
-            return false;
-        };
-    }
-
-    public function updatePost($postId, $title, $content)
+    public function update($postId, $title, $content)
     {
         if ($this->PostService->updatePost($postId, $title, $content)) {
             return true;
@@ -43,22 +45,19 @@ class TaskController
         };
     }
 
-    public function displayPosts()
+    public function destroy($postId)
     {
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-            $posts = $this->PostService->fetchUserPosts($userId);
-            $this->renderView('dashboard', ['posts' => $posts]);
+        if ($this->PostService->deletePost($postId)) {
+            return true;
         } else {
-            header("Location: /login");
-            exit();
-        }
+            error_log("Failed to delete post");
+            return false;
+        };
     }
 
-    private function renderView($viewName, $data = [])
+    public function show($postId)
     {
-        extract($data);
-        require_once __DIR__ . "/../views/{$viewName}.view.php";
+        dd('show post Id');
     }
 
     public function handlePostSubmission()
@@ -67,7 +66,7 @@ class TaskController
             $title = $_POST['title'];
             $content = $_POST['content'];
 
-            if ($this->addPost($_SESSION['user_id'], $title, $content)) {
+            if ($this->create($_SESSION['user_id'], $title, $content)) {
                 header("Location: /dashboard");
                 exit();
             } else {
@@ -82,7 +81,7 @@ class TaskController
             $post_id = $_POST['post_id'];
             //echo $_SESSION['user_id'] . " id " . $post_id;
             // Call the deletePost method
-            if ($this->deletePost($post_id)) {
+            if ($this->destroy($post_id)) {
                 header("Location: /dashboard"); // Redirect after deleting the post
                 exit();
             } else {
@@ -119,7 +118,7 @@ class TaskController
             $title = trim($_POST['title']);
             $content = trim($_POST['content']);
 
-            if ($this->updatePost($post_id, $title, $content)) {
+            if ($this->update($post_id, $title, $content)) {
                 header("Location: /dashboard");
                 exit();
             } else {
