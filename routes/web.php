@@ -3,13 +3,15 @@
 use Core\Database;
 use App\Controllers\AuthController;
 use App\Controllers\PostController;
+use App\Controllers\PostEditController;
 
 session_start();
 
 $conn = new Database()->connect();
 
-$PostController = new PostController($conn);
 $AuthController = new AuthController($conn);
+$PostController = new PostController($conn);
+$PostEditController = new PostEditController($conn);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -39,16 +41,15 @@ if ($uri === '/' && !$isLoggedin) {
 } elseif ($uri === '/login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $AuthController->handleLogin();
 } elseif ($uri === '/add_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostController->handlePostSubmission();
+    $PostController->store();
 } elseif ($uri === '/post/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostController->handlePostDelete();
-} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostController->handlePostEdit();
+    $PostController->destroy();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    require_once __DIR__ . '/../app/views/post-edit.view.php';
-    exit();
+    renderView('post-edit');
+} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $PostEditController->handlePostEdit();
 } elseif ($uri === '/post/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostController->handlePostUpdate();
+    $PostEditController->update();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $AuthController->logOut();
 } else {

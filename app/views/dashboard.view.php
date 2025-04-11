@@ -18,6 +18,9 @@ ob_start();
     </div>
 
     <div class="form__add__post my-4">
+            <?php if (isset($errors['store'])): ?> 
+                <p class="text-red-500 font-bold text-sm mt-2"><?= $errors['store'] ?></p>
+            <?php endif; ?>
         <form method="POST" action="/add_post" id="add_post" name="add_post" class="flex flex-col">
             <label for="title">Title:</label>
             <input type="text" name="title" id="title" class="input__field border-1 border-blue-500 rounded-md px-2 py-1" required>

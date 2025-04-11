@@ -7,18 +7,18 @@ use App\Services\PostService;
 
 class PostController
 {
-    private $PostService;
+    private $postService;
 
     public function __construct($conn)
     {
-        $this->PostService = new PostService($conn);
+        $this->postService = new PostService($conn);
     }
 
     public function index()
     {
         if (isset($_SESSION['user_id'])) {
             $userId = $_SESSION['user_id'];
-            $posts = $this->PostService->get($userId);
+            $posts = $this->postService->get($userId);
             renderView('dashboard', ['posts' => $posts]);
         } else {
             header("Location: /login");
@@ -26,54 +26,14 @@ class PostController
         }
     }
 
-    public function store($userId, $title, $content)
+    public function store()
     {
-        if ($this->PostService->store($userId, $title, $content)) {
-            return true;
-        } else {
-            error_log("Failed to add post");
-            return false;
-        };
-    }
+        if (isset($_POST['add_post'])) {
 
-    public function update($postId, $title, $content)
-    {
-        if ($this->PostService->update($postId, $title, $content)) {
-            return true;
-        } else {
-            error_log("Failed to update post");
-            return false;
-        };
-    }
-
-    public function destroy($postId)
-    {
-        if ($this->PostService->destroy($postId)) {
-            return true;
-        } else {
-            error_log("Failed to delete post");
-            return false;
-        };
-    }
-
-    public function find($postId)
-    {
-        dd('show post Id');
-        if ($this->PostService->find($postId)) {
-            return true;
-        } else {
-            error_log("Failed to find post");
-            return false;
-        };
-    }
-
-    public function handlePostSubmission()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_post'])) {
-
-            $errors = [];
+            $userId = $_SESSION['user_id'];
             $title = htmlspecialchars($_POST['title']);
             $content = htmlspecialchars($_POST['content']);
+            $errors = [];
 
             if (! Validator::string($title, 1, 250)) {
                 $errors['title'] = "Title of not more than 250 charakters is required.";
@@ -90,64 +50,53 @@ class PostController
 
             } else {
 
-                if ($this->store($_SESSION['user_id'], $title, $content)) {
+                if (! $this->postService->store($userId, $title, $content)) {
+
+                    $errors['store'] = "Couldn't add post. Try again.";
+                    renderView('dashboard', [
+                        'posts' => $this->index(),
+                        'errors' => $errors,
+                    ]);
+
+                } else {
                     header("Location: /dashboard");
                     exit();
-                } else {
-                    echo "Error: Could not add post.";
                 }
             }
         }
     }
 
-    public function handlePostDelete()
+    public function destroy()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['post_delete'])) {
-            $post_id = htmlspecialchars($_POST['post_id']);
-
-            if ($this->destroy($post_id)) {
-                header("Location: /dashboard"); // Redirect after deleting the post
-                exit();
-            } else {
-                echo "Error: Could not delete the post.";
-            }
-        }
-    }
-
-    public function handlePostEdit()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'post_edit')) {
+        if (isset($_POST['post_delete'])) {
+            $postId = htmlspecialchars($_POST['post_id']);
             $errors = [];
-            $_SESSION['edit_post_id'] = $_POST['post_id'];
-            $post_id = htmlspecialchars($_POST['post_id']);
 
-            $post = $this->PostService->find($post_id);
-
-            if (! $post) {
-                $errors['no_post'] = "No such post to edit";
-                renderView('post-edit', ['errors' => $errors]);
+            if (! $this->postService->destroy($postId)) {
+                $errors['delete'] = "Error: Could not delete the post.";
+                renderView('dashboard', [
+                    'posts' => $this->index(),
+                    'errors' => $errors,
+                ]);
             } else {
-                $_SESSION['edit_post_data'] = $post;
-                $_SESSION['edit_post_id'] = $post_id;
-
-                header("Location: /post/edit");
-            }
-        }
-    }
-
-    public function handlePostUpdate()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && ($_POST['action'] === 'post_update')) {
-            $post_id = $_POST['post_id'];
-            $title = htmlspecialchars(trim($_POST['title']));
-            $content = htmlspecialchars(trim($_POST['content']));
-
-            if ($this->update($post_id, $title, $content)) {
                 header("Location: /dashboard");
                 exit();
-            } else {
-                echo "Error: Could not update the post.";
             }
         }
+    }
+
+    public function find()
+    {
+        dd('show post Id');
+        $postId = htmlspecialchars($_POST['post_id']);
+        if (! $this->postService->find($postId)) {
+            $errors = [];
+            renderView('dashboard', [
+                'posts' => $this->index(),
+                'errors' => $errors,
+            ]);
+        } else {
+            // Show single post view
+        };
     }
 }
