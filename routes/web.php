@@ -3,12 +3,14 @@
 use Core\Database;
 use App\Controllers\AuthController;
 use App\Controllers\PostController;
+use App\Controllers\PostEditController;
 
 session_start();
 
 $conn = new Database()->connect();
 
 $PostController = new PostController($conn);
+$PostEditController = new PostEditController($conn);
 $AuthController = new AuthController($conn);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -42,13 +44,12 @@ if ($uri === '/' && !$isLoggedin) {
     $PostController->handlePostSubmission();
 } elseif ($uri === '/post/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $PostController->handlePostDelete();
-} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostController->handlePostEdit();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    require_once __DIR__ . '/../app/views/post-edit.view.php';
-    exit();
+    $PostEditController->show();
+} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $PostEditController->edit();
 } elseif ($uri === '/post/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostController->handlePostUpdate();
+    $PostEditController->update();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $AuthController->logOut();
 } else {
