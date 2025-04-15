@@ -56,7 +56,6 @@ if ($uri === '/' && !$isLoggedin) {
     abort(404);
 }
 
-
 function routeToController($uri, $routes)
 {
     if (array_key_exists($uri, $routes)) {
