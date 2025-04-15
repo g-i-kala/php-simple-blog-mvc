@@ -45,9 +45,9 @@ if ($uri === '/' && !$isLoggedin) {
 } elseif ($uri === '/post/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $PostController->destroy();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-    renderView('post-edit');
+    $PostEditController->show();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $PostEditController->handlePostEdit();
+    $PostEditController->edit();
 } elseif ($uri === '/post/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $PostEditController->update();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
