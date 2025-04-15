@@ -9,6 +9,11 @@ session_start();
 
 $conn = new Database()->connect();
 
+<<<<<<< HEAD
+=======
+$PostController = new PostController($conn);
+$PostEditController = new PostEditController($conn);
+>>>>>>> structRefactor
 $AuthController = new AuthController($conn);
 $PostController = new PostController($conn);
 $PostEditController = new PostEditController($conn);
@@ -43,11 +48,19 @@ if ($uri === '/' && !$isLoggedin) {
 } elseif ($uri === '/add_post' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $PostController->store();
 } elseif ($uri === '/post/delete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+<<<<<<< HEAD
     $PostController->destroy();
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     renderView('post-edit');
 } elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $PostEditController->handlePostEdit();
+=======
+    $PostController->handlePostDelete();
+} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $PostEditController->show();
+} elseif ($uri === '/post/edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $PostEditController->edit();
+>>>>>>> structRefactor
 } elseif ($uri === '/post/update' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $PostEditController->update();
 } elseif ($uri === '/logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {

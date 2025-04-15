@@ -14,6 +14,32 @@ class PostEditController
         $this->postService = new PostService($conn);
     }
 
+    public function show()
+    {
+        renderView('post-edit');
+    }
+
+    public function edit()
+    {
+        if (isset($_POST['action']) && ($_POST['action'] === 'post_edit')) {
+
+            $postId = htmlspecialchars($_POST['post_id']);
+            $post = $this->postService->find($postId);
+            $errors = [];
+
+            if (! $post) {
+                $errors['no_post'] = "No such post to edit";
+                renderView('post-edit', ['errors' => $errors]);
+            }
+
+            $_SESSION['edit_post_data'] = $post;
+            $_SESSION['edit_post_id'] = $postId;
+
+            header("Location: /post/edit");
+            exit();
+        }
+    }
+
     public function update()
     {
         if (isset($_POST['action']) && ($_POST['action'] === 'post_update')) {
@@ -44,27 +70,6 @@ class PostEditController
                 header("Location: /dashboard");
                 exit();
             }
-        }
-    }
-
-    public function handlePostEdit()
-    {
-        if (isset($_POST['action']) && ($_POST['action'] === 'post_edit')) {
-
-            $postId = htmlspecialchars($_POST['post_id']);
-            $post = $this->postService->find($postId);
-            $errors = [];
-
-            if (! $post) {
-                $errors['no_post'] = "No such post to edit";
-                renderView('post-edit', ['errors' => $errors]);
-            }
-
-            $_SESSION['edit_post_data'] = $post;
-            $_SESSION['edit_post_id'] = $postId;
-
-            header("Location: /post/edit");
-            exit();
         }
     }
 }
