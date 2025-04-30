@@ -49,8 +49,15 @@ class AuthController
             $result = $this->auth->register($username, $password, $email);
 
             if ($result) {
-                $_SESSION['success'] = "Resgistration succesful.";
-                header("Location: /login");
+                $loginResult = $this->auth->login($email, $password);
+
+                if ($loginResult) {
+                    $_SESSION['success'] = "Login succesful. Enjoy.";
+                    header("Location: /dashboard");
+                } else {
+                    $errors['general'] = "Something went wrong. Please try again.";
+                    require __DIR__ . "./../views/login.view.php";
+                }
             } else {
                 $errors['general'] = "Something went wrong. Please try again.";
                 require __DIR__ . "./../views/register.view.php";
