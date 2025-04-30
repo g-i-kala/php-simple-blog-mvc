@@ -21,6 +21,10 @@ class AuthController
             $errors = [];
             $result = '';
 
+            if (! isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                $errors['session'] = 'Your session has expired. Please refresh the page and try again.';
+            }
+
             $username = htmlspecialchars((trim($_POST['username'])));
             $email = htmlspecialchars((trim($_POST['email'])));
             $password = $_POST['password'];
