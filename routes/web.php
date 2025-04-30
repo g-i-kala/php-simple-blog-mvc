@@ -4,15 +4,11 @@ use Core\Database;
 use App\Controllers\AuthController;
 use App\Controllers\PostController;
 use App\Controllers\PostEditController;
+use Core\CSRFValidator;
 
 session_start();
-if (empty($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    $_SESSION["csrf_token_expire"] = time() + 1800;
-}
 
-$token = $_SESSION['csrf_token'];
-$token_expire = $_SESSION["csrf_token_expire"];
+CSRFValidator::generateCsrfToken();
 
 $conn = new Database()->connect();
 
